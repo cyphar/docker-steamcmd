@@ -16,6 +16,42 @@ than allowing Steam to carpet-bomb your filesystem with crap.
 [steamcmd]: https://developer.valvesoftware.com/wiki/SteamCMD
 [openmw]: https://openmw.org/en/
 
+### Usage ###
+
+First, build the Docker image:
+
+```
+% docker build -t steamcmd .
+[ lots of output ]
+```
+
+You can now use the commandline interface as normal:
+
+```
+% docker run -it -v /where/you/want/to/stash/stuff:/opt/data --name steam --rm steamcmd
+[ lots of output ]
+Steam> [enter commands]
+```
+
+`steamcmd` also allows you to one-line everything, like so (the AppID I used is
+for the GoTY Morrowind game):
+
+```
+% docker run -it -v /where/you/want/to/stash/stuff:/opt/data --name steam --rm steamcmd +login username password +force_install_dir /opt/data +@sSteamCmdForcePlatformType windows +app_update 22320 validate +quit
+[ lots of output ]
+% # everything is now in /opt/data/...
+```
+
+I won't be publishing this on the Docker hub because I'm not going to
+explicitly support proprietary software. This is just a convenience for people
+who want to get their game data without needing to worry about how to set up
+and then purge steam. To purge everything:
+
+```
+% docker rm -f steam
+% docker rmi steamcmd:latest
+```
+
 ### License ###
 
 This project (if it can even be called that since it's basically a shell
